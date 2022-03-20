@@ -1,6 +1,5 @@
 # what-do-i-do-today
-It gives you things that you are going to do today, complete them all
-When you succed, post your success on the feed  
+It gives you things that you are going to do today, finish them all. If you complete everything, post your success on the feed  
 
 SOURCE: [Bored API](https://www.boredapi.com)
 
