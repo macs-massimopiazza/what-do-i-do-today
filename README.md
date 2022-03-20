@@ -6,6 +6,10 @@ SOURCE: [Bored API](https://www.boredapi.com)
 ## How to contribute
 Check issues to know a todo of things that needs to get done
 
+### Good practice:
+- When you are assigned to an issue create a branch linked to it called ```<branch-name>#<issue-number>```
+- When you're done with an issue, make sure it is mergeable with the master and create a pull request
+
 ## Project setup
 ```
 npm install
