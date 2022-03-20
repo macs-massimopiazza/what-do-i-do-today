@@ -4,6 +4,8 @@ When you succed, post your success on the feed
 
 SOURCE: [Bored API](https://www.boredapi.com)
 
+## How to contribute
+Check issues to know a todo of things that needs to get done
 
 ## Project setup
 ```
