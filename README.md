@@ -1,4 +1,9 @@
 # what-do-i-do-today
+It gives you things that you are going to do today, complete them all
+When you succed, post your success on the feed  
+
+SOURCE: [Bored API](https://www.boredapi.com)
+
 
 ## Project setup
 ```
