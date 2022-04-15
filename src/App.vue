@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="activities-wrapper">
+      <ActivityCard v-for="(activity, index) in activities" :key="index" :activityInfo="activity"/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ActivityCard from './components/ActivityCard.vue'
+// import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ActivityCard
+  },
+  data(){
+    return {
+      activities: [],
+    }
+  },
+  methods: {
+    // TODO https://www.boredapi.com/
   }
 }
 </script>
 
 <style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.activities-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 </style>
