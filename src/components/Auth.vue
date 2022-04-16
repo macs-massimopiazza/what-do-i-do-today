@@ -1,27 +1,66 @@
 <template>
-  <div class="auth-page">
-    <div class="login-wrapper">
+  <div class="auth-page" :class="className">
+    <!-- LOGIN VIEW -->
+    <div class="login-section" v-if="viewLogin">
       <h1 class="title">What Do I Do Today?</h1>
       <div class="classic-login">
         <input type="text" placeholder="Email">
-        <input type="password" placeholder="Password">
+        <input type="text" placeholder="Password">
         <button class="btn-primary">Login</button>
       </div>
       <div class="third-party-login">
-        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Login in with Google</span></button>
-        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Login with Facebook</span></button>
+        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign with Facebook</span></button>
       </div>
     </div>
+    <!-- REGISTER VIEW -->
+    <div class="register-section" v-else>
+      <h1 class="title">What Do I Do Today?</h1>
+      <div class="classic-login">
+        <input type="text" placeholder="Username">
+        <input type="text" placeholder="Email">
+        <input type="text" placeholder="Password">
+        <button class="btn-primary">Register</button>
+      </div>
+      <div class="third-party-login">
+        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign with Facebook</span></button>
+      </div>
+    </div>
+    <!-- SWITCH VIEW -->
     <div class="create-account">
-      <h4 class="subtitle">Don't have an account?</h4>
-      <button class="btn-primary">Create One</button>
+      <h4 class="subtitle">{{ switchQuestion }} have an account?</h4>
+      <button class="btn-primary" @click="changeView"> {{ switchText }}</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AuthComponent'
+  name: 'AuthComponent',
+  data(){
+    return {
+      viewLogin: true,
+      switchQuestion: "Don't",
+      switchText: "Create One",
+      className: "login",
+    }
+  },
+  methods: {
+    changeView: function() {
+      if(this.viewLogin) {
+        this.viewLogin = false;
+        this.switchQuestion = "Already";
+        this.switchText = "Go to Login";
+        this.className = "register";
+      } else {
+        this.viewLogin = true;
+        this.switchQuestion = "Don't";
+        this.switchText = "Create One";
+        this.className = "login";
+      }
+    }
+  }
 }
 </script>
 
@@ -34,6 +73,31 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    transition: all 1s;
+
+    button {
+      min-height: 3rem;
+
+      &.btn-primary {
+        border: none;
+        color: #fff;
+        background-color: #4c3211;
+
+        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+    }
+    &.login {
+      background: #eacda3;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(300deg , #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(300deg, #d6ae7b, #eacda3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    &.register {
+      background: #eacda3;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(300deg , #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(300deg, #d6ae7b, #eacda3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
   }
   .title {
     margin-bottom: 2rem;
@@ -41,21 +105,9 @@ export default {
     font-size: 3rem;
   }
 
-  .login-wrapper, .create-account{
+  .login-section, .register-section, .create-account{
     width: 100%;
     max-width: 70vw;
-  }
-  button {
-    min-height: 3rem;
-
-    &.btn-primary {
-      border: none;
-      background-color: #4c3211;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
   }
   
 
