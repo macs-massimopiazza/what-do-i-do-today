@@ -12,7 +12,7 @@ import GameHome from './components/GameHome.vue'
 
 // const auth = getAuth();
 // const analytics = getAnalytics(app);
-import { state } from "./state.js"
+import { state, checkSignInStatus } from "./state.js"
 
 export default {
   name: 'App',
@@ -25,8 +25,11 @@ export default {
   },
   computed: {
     getSignedIn(){
-      return state.signedIn;
+      return state.signedIn.status;
     }
+  },
+  mounted() {
+    checkSignInStatus()
   }
 }
 </script>

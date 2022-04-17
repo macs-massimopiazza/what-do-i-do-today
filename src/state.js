@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged   } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0eHlAwojYv6sDdMqapqmgZTBMQFELrHc",
@@ -18,7 +18,10 @@ const auth = getAuth(app);
 //Data
 export const state = Vue.observable(
     {
-        signedIn: false,
+        signedIn: {
+            status: false,
+            sessionUser: {},
+        },
     }
 )
 
@@ -35,16 +38,30 @@ export const registerNewUser = (email, password) =>
     });
   });
 
-// export const registerNewUser = function(email, password){
-//     createUserWithEmailAndPassword(auth, email, password)
-//         .then((userCredential) => {
-//             console.log(userCredential)
-//             return "ok"
-//         })
-//         .catch((error) => {
-//             console.log(error.code, error.message)
-//         });
-// }
+export const loginUser = (email, password) =>
+  new Promise((resolve, reject) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        console.log(userCredential)
+        resolve("ok")
+        checkSignInStatus()
+    })
+    .catch((error) => {
+        reject(error.code + " => " + error.message)
+    });
+  });
+
+export const checkSignInStatus = function(){
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          state.signedIn.status = true;
+          state.signedIn.sessionUser = user;
+        } else {
+          state.signedIn.status = false;
+          state.signedIn.sessionUser = {};
+        }
+      });
+}
 
 
 

@@ -7,7 +7,7 @@
       <div class="classic-login">
         <input type="text" placeholder="Email" v-model="emailInput">
         <input type="text" placeholder="Password" v-model="pswInput">
-        <button class="btn-primary">Login</button>
+        <button class="btn-primary" @click="callLoginUser">Login</button>
       </div>
       <div class="third-party-login">
         <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { registerNewUser } from "../state.js"
+import { registerNewUser, loginUser } from "../state.js"
 export default {
   name: 'AuthComponent',
   data(){
@@ -72,6 +72,21 @@ export default {
           .then(() => {
             this.throwAlert("Utente creato con Successo!", "success");
             this.viewLogin = true;
+          })
+          .catch(error => {
+             this.throwAlert(error, "error");
+          });        
+      } else {
+        this.throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+      }
+      this.emailInput = ''
+      this.pswInput = ''
+    },
+    callLoginUser: function(){
+      if(this.emailInput != '' && this.pswInput != '') {
+        loginUser(this.emailInput, this.pswInput)
+          .then(() => {
+            this.throwAlert("Login Effettuato con Successo!", "success");
           })
           .catch(error => {
              this.throwAlert(error, "error");
