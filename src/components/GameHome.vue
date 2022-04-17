@@ -1,12 +1,20 @@
 <template>
   <div class="game-home">
     Apposto sei loggato
+    <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
+import { logoutUser } from "../state.js"
+
 export default {
-  name: 'GameHome'
+  name: 'GameHome',
+  methods: {
+    logout: function(){
+      logoutUser();
+    }
+  }
 }
 </script>
 

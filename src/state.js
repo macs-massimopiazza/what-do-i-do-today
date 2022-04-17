@@ -51,6 +51,13 @@ export const loginUser = (email, password) =>
     });
   });
 
+export const logoutUser = function() {
+    auth.signOut()
+    .then(() => {
+        checkSignInStatus()
+    })
+}
+
 export const checkSignInStatus = function(){
     onAuthStateChanged(auth, (user) => {
         if (user) {
