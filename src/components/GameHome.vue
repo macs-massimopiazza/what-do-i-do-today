@@ -1,18 +1,23 @@
 <template>
   <div class="game-home">
-    Apposto sei loggato
+    <pre> {{ getUserInfo }} </pre>
     <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
-import { logoutUser } from "../state.js"
+import { logoutUser, state } from "../state.js"
 
 export default {
   name: 'GameHome',
   methods: {
     logout: function(){
       logoutUser();
+    }
+  },
+  computed: {
+    getUserInfo() {
+      return state.signedIn.sessionUser
     }
   }
 }

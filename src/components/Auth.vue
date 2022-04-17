@@ -1,6 +1,5 @@
 <template>
   <div class="auth-page" :class="className">
-    <div class="alert-box" :class="alertClass"> {{alertMessage}} </div>
     <!-- LOGIN VIEW -->
     <div class="login-section" v-if="viewLogin">
       <h1 class="title">What Do I Do Today?</h1>
@@ -37,7 +36,7 @@
 </template>
 
 <script>
-import { registerNewUser, loginUser } from "../state.js"
+import { registerNewUser, loginUser, throwAlert } from "../state.js"
 export default {
   name: 'AuthComponent',
   data(){
@@ -48,8 +47,6 @@ export default {
       className: "login",
       emailInput: '',
       pswInput: '',
-      alertClass: "hidden",
-      alertMessage: '--'
     }
   },
   methods: {
@@ -70,14 +67,17 @@ export default {
       if(this.emailInput != '' && this.pswInput != '') {
         registerNewUser(this.emailInput, this.pswInput)
           .then(() => {
-            this.throwAlert("Utente creato con Successo!", "success");
+            throwAlert("Utente creato con Successo!", "success");
             this.viewLogin = true;
+            this.switchQuestion = "Don't";
+            this.switchText = "Create One";
+            this.className = "login";
           })
           .catch(error => {
-             this.throwAlert(error, "error");
+             throwAlert(error, "error");
           });        
       } else {
-        this.throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+        throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
       }
       this.emailInput = ''
       this.pswInput = ''
@@ -86,25 +86,17 @@ export default {
       if(this.emailInput != '' && this.pswInput != '') {
         loginUser(this.emailInput, this.pswInput)
           .then(() => {
-            this.throwAlert("Login Effettuato con Successo!", "success");
+            throwAlert("Login Effettuato con Successo!", "success");
           })
           .catch(error => {
-             this.throwAlert(error, "error");
+             throwAlert(error, "error");
           });        
       } else {
-        this.throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+        throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
       }
       this.emailInput = ''
       this.pswInput = ''
     },
-    throwAlert: function(alertText, alertType){
-      this.alertMessage = alertText;
-      this.alertClass = "show " + alertType;
-      setTimeout(() => {
-        this.alertMessage = '--';
-        this.alertClass = "hidden";
-      }, 4000)
-    }
   }
 }
 </script>
@@ -119,32 +111,6 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     transition: all 1s;
-
-    .alert-box {
-      color: #fff;
-      padding: 1rem;
-      border-radius: 5px;
-      position: absolute;
-      width: 100%;
-      max-width: min(70vw, 350px);
-      transition: all 300ms ease-out;
-      &.success {
-        background: #11998e;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-      }
-      &.error {
-        background: #FF416C;
-        background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-        background: linear-gradient(to right, #FF4B2B, #FF416C);
-      }
-      &.hidden {
-        top: -100px;
-      }
-      &.show {
-        top: 20px;
-      }
-  }
 
     button {
       min-height: 3rem;

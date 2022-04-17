@@ -22,10 +22,22 @@ export const state = Vue.observable(
             status: false,
             sessionUser: {},
         },
+        alertClass: "hidden",
+        alertMessage: '--'
     }
 )
 
-//Functions
+//Alert Manager
+export const throwAlert = function(alertText, alertType){
+    state.alertMessage = alertText;
+    state.alertClass = "show " + alertType;
+    setTimeout(() => {
+        state.alertClass = "hidden";
+        state.alertMessage = '--';
+    }, 4000)
+  }
+
+//Login Logic Functions
 export const registerNewUser = (email, password) =>
   new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -69,7 +81,6 @@ export const checkSignInStatus = function(){
         }
       });
 }
-
 
 
 
