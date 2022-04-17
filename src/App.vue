@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Auth v-if="getSignedIn" />
+    <Auth v-if="!getSignedIn" />
     <GameHome v-else />
   </div>
 </template>

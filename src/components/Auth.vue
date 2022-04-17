@@ -1,11 +1,12 @@
 <template>
   <div class="auth-page" :class="className">
+    <div class="alert-box" :class="alertClass"> {{alertMessage}} </div>
     <!-- LOGIN VIEW -->
     <div class="login-section" v-if="viewLogin">
       <h1 class="title">What Do I Do Today?</h1>
       <div class="classic-login">
-        <input type="text" placeholder="Email">
-        <input type="text" placeholder="Password">
+        <input type="text" placeholder="Email" v-model="emailInput">
+        <input type="text" placeholder="Password" v-model="pswInput">
         <button class="btn-primary">Login</button>
       </div>
       <div class="third-party-login">
@@ -17,10 +18,10 @@
     <div class="register-section" v-else>
       <h1 class="title">What Do I Do Today?</h1>
       <div class="classic-login">
-        <input type="text" placeholder="Username">
-        <input type="text" placeholder="Email">
-        <input type="text" placeholder="Password">
-        <button class="btn-primary">Register</button>
+        <!-- <input type="text" placeholder="Username"> -->
+        <input type="text" placeholder="Email" v-model="emailInput">
+        <input type="text" placeholder="Password" v-model="pswInput">
+        <button class="btn-primary" @click="callRegisterNewUser">Register</button>
       </div>
       <div class="third-party-login">
         <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import { registerNewUser } from "../state.js"
 export default {
   name: 'AuthComponent',
   data(){
@@ -44,6 +46,10 @@ export default {
       switchQuestion: "Don't",
       switchText: "Create One",
       className: "login",
+      emailInput: '',
+      pswInput: '',
+      alertClass: "hidden",
+      alertMessage: '--'
     }
   },
   methods: {
@@ -59,6 +65,30 @@ export default {
         this.switchText = "Create One";
         this.className = "login";
       }
+    },
+    callRegisterNewUser: function(){
+      if(this.emailInput != '' && this.pswInput != '') {
+        registerNewUser(this.emailInput, this.pswInput)
+          .then(() => {
+            this.throwAlert("Utente creato con Successo!", "success");
+            this.viewLogin = true;
+          })
+          .catch(error => {
+             this.throwAlert(error, "error");
+          });        
+      } else {
+        this.throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+      }
+      this.emailInput = ''
+      this.pswInput = ''
+    },
+    throwAlert: function(alertText, alertType){
+      this.alertMessage = alertText;
+      this.alertClass = "show " + alertType;
+      setTimeout(() => {
+        this.alertMessage = '--';
+        this.alertClass = "hidden";
+      }, 4000)
     }
   }
 }
@@ -74,6 +104,32 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     transition: all 1s;
+
+    .alert-box {
+      color: #fff;
+      padding: 1rem;
+      border-radius: 5px;
+      position: absolute;
+      width: 100%;
+      max-width: min(70vw, 350px);
+      transition: all 300ms ease-out;
+      &.success {
+        background: #11998e;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+      &.error {
+        background: #FF416C;
+        background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+      }
+      &.hidden {
+        top: -100px;
+      }
+      &.show {
+        top: 20px;
+      }
+  }
 
     button {
       min-height: 3rem;
@@ -107,7 +163,7 @@ export default {
 
   .login-section, .register-section, .create-account{
     width: 100%;
-    max-width: 70vw;
+    max-width: min(70vw, 350px);
   }
   
 
