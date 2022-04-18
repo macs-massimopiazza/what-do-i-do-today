@@ -2,8 +2,8 @@
   <div class="auth-page" :class="className">
     <!-- LOGIN VIEW -->
     <div class="login-section" v-if="viewLogin">
-      <h1 class="title">What Do I Do Today?</h1>
-      <!-- <img class="title" src="../assets/wdidt-logo.svg" alt=""> -->
+      <!-- <h1 class="title">What Do I Do Today?</h1> -->
+      <img class="title" src="../assets/wdidt-logo.svg" alt="">
       <!-- <img class="title" src="../assets/wdidt-logo2.svg" alt=""> -->
       <div class="classic-login">
         <input type="text" placeholder="Email" v-model="emailInput">
