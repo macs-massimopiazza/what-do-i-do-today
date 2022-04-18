@@ -44,6 +44,8 @@ export const throwAlert = function(alertText, alertType){
 //Login Logic Functions
 export const registerNewUser = (email, password) =>
   new Promise((resolve, reject) => {
+    email = email.trim();
+    password = password.trim();
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         console.log(userCredential)
@@ -56,6 +58,8 @@ export const registerNewUser = (email, password) =>
 
 export const loginUser = (email, password) =>
   new Promise((resolve, reject) => {
+    email = email.trim();
+    password = password.trim();
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         console.log(userCredential)
