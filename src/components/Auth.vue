@@ -17,7 +17,8 @@
     </div>
     <!-- REGISTER VIEW -->
     <div class="register-section" v-else>
-      <h1 class="title">What Do I Do Today?</h1>
+      <!-- <h1 class="title">What Do I Do Today?</h1> -->
+      <img class="title" src="../assets/wdidt-logo.svg" alt="">
       <div class="classic-login">
         <!-- <input type="text" placeholder="Username"> -->
         <input type="text" placeholder="Email" v-model="emailInput">
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import { registerNewUser, loginUser, throwAlert } from "../state.js"
+import { state, registerNewUser, loginUser, throwAlert } from "../state.js"
 export default {
   name: 'AuthComponent',
   data(){
@@ -67,6 +68,7 @@ export default {
     },
     callRegisterNewUser: function(){
       if(this.emailInput != '' && this.pswInput != '') {
+        state.loadingClass = "show";
         registerNewUser(this.emailInput, this.pswInput)
           .then(() => {
             throwAlert("Utente creato con Successo!", "success");
@@ -74,9 +76,11 @@ export default {
             this.switchQuestion = "Don't";
             this.switchText = "Create One";
             this.className = "login";
+            state.loadingClass = "hidden";
           })
           .catch(error => {
              throwAlert(error, "error");
+              state.loadingClass = "hidden";
           });        
       } else {
         throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
@@ -86,12 +90,15 @@ export default {
     },
     callLoginUser: function(){
       if(this.emailInput != '' && this.pswInput != '') {
+        state.loadingClass = "show";
         loginUser(this.emailInput, this.pswInput)
           .then(() => {
             throwAlert("Login Effettuato con Successo!", "success");
+            state.loadingClass = "hidden"
           })
           .catch(error => {
              throwAlert(error, "error");
+             state.loadingClass = "hidden"
           });        
       } else {
         throwAlert("Attenzione! Inserisci Email e Passowrd", "error")

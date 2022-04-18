@@ -23,7 +23,8 @@ export const state = Vue.observable(
             sessionUser: {},
         },
         alertClass: "hidden",
-        alertMessage: '--'
+        alertMessage: '--',
+        loadingClass: "hidden",
     }
 )
 

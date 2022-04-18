@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="alert-box" :class="getAlertClass"> {{getAlertMessage}} </div>
+    <div class="loading" :class="getLoadingClass"><img src="./assets/loading.svg"></div>
     <Auth v-if="!getSignedIn" />
     <GameHome v-else />
   </div>
@@ -33,6 +34,9 @@ export default {
     },
     getAlertMessage(){
       return state.alertMessage;
+    },
+    getLoadingClass(){
+      return state.loadingClass;
     }
   },
   mounted() {
@@ -62,6 +66,22 @@ export default {
   color: rgb(232, 232, 232);
 }
 
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31, 31, 31, 0.4);
+  display: grid;
+  place-content: center;
+  animation: all 250s ease-out;
+  &.hidden {
+    visibility: hidden;
+  }
+  &.show {
+    visibility: visible;
+  }
+}
+
 #app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -71,7 +91,6 @@ export default {
   background: #eacda3;  /* fallback for old browsers */
   background: -webkit-linear-gradient(300deg , #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(300deg, #d6ae7b, #eacda3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 
 .alert-box {
