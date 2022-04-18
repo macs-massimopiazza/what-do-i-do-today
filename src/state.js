@@ -27,6 +27,9 @@ export const state = Vue.observable(
     }
 )
 
+//Game Logic
+
+
 //Alert Manager
 export const throwAlert = function(alertText, alertType){
     state.alertMessage = alertText;
