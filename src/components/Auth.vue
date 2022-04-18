@@ -3,6 +3,8 @@
     <!-- LOGIN VIEW -->
     <div class="login-section" v-if="viewLogin">
       <h1 class="title">What Do I Do Today?</h1>
+      <!-- <img class="title" src="../assets/wdidt-logo.svg" alt=""> -->
+      <!-- <img class="title" src="../assets/wdidt-logo2.svg" alt=""> -->
       <div class="classic-login">
         <input type="text" placeholder="Email" v-model="emailInput">
         <input type="text" placeholder="Password" v-model="pswInput">
@@ -142,8 +144,8 @@ export default {
   }
   .title {
     margin-bottom: 2rem;
-    color: #fff;
-    font-size: 3rem;
+    // color: #fff;
+    // font-size: 3rem;
   }
 
   .login-section, .register-section, .create-account{
