@@ -6,9 +6,9 @@
       <img class="title" src="../assets/wdidt-logo.svg" alt="">
       <!-- <img class="title" src="../assets/wdidt-logo2.svg" alt=""> -->
       <div class="classic-login">
-        <input type="text" placeholder="Email" v-model="emailInput">
-        <input type="text" placeholder="Password" v-model="pswInput">
-        <button class="btn-primary" @click="callLoginUser" @keyup.enter="callLoginUser">Login</button>
+        <input type="text" placeholder="Email" v-model="emailInput" @keyup.enter="callLoginUser">
+        <input type="password" placeholder="Password" v-model="pswInput" @keyup.enter="callLoginUser">
+        <button class="btn-primary" @click="callLoginUser" >Login</button>
       </div>
       <div class="third-party-login">
         <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
@@ -21,8 +21,8 @@
       <img class="title" src="../assets/wdidt-logo.svg" alt="">
       <div class="classic-login">
         <!-- <input type="text" placeholder="Username"> -->
-        <input type="text" placeholder="Email" v-model="emailInput">
-        <input type="text" placeholder="Password" v-model="pswInput">
+        <input type="text" placeholder="Email" v-model="emailInput" @keyup.enter="callRegisterNewUser">
+        <input type="password" placeholder="Password" v-model="pswInput" @keyup.enter="callRegisterNewUser">
         <button class="btn-primary" @click="callRegisterNewUser" @keyup.enter="callLoginUser">Register</button>
       </div>
       <div class="third-party-login">
