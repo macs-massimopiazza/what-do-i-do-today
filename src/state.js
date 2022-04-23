@@ -29,7 +29,9 @@ export const state = Vue.observable(
 )
 
 //Game Logic
-
+export const getCurrentSignedInUserData = function(){
+  return auth.currentUser;
+}
 
 //Alert Manager
 export const throwAlert = function(alertText, alertType){
@@ -82,10 +84,10 @@ export const checkSignInStatus = function(){
     onAuthStateChanged(auth, (user) => {
         if (user) {
           state.signedIn.status = true;
-          state.signedIn.sessionUser = user;
+          // state.signedIn.sessionUser = user;
         } else {
           state.signedIn.status = false;
-          state.signedIn.sessionUser = {};
+          // state.signedIn.sessionUser = {};
         }
       });
 }

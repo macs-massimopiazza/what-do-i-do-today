@@ -1,12 +1,12 @@
 <template>
   <div class="game-home">
-    <pre> {{ getUserInfo }} </pre>
-    <button @click="logout">Logout</button>
+    <!-- <pre> {{ getUserInfo }} </pre> -->
+    <button class="btn-primary" @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
-import { logoutUser, state } from "../state.js"
+import { logoutUser, getCurrentSignedInUserData } from "../state.js"
 
 export default {
   name: 'GameHome',
@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     getUserInfo() {
-      return state.signedIn.sessionUser
+      return getCurrentSignedInUserData();
     }
   }
 }
@@ -25,5 +25,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+button {
+      min-height: 3rem;
 
+      &.btn-primary {
+        border: none;
+        color: #fff;
+        background-color: #4c3211;
+
+        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
 </style>
