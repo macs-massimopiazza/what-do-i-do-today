@@ -1,23 +1,77 @@
 <template>
   <div class="game-home">
+    <lord-icon
+        src="https://cdn.lordicon.com/apuwlldu.json"
+        trigger="loop"
+        colors="primary:#ffffff,secondary:#ffffff"
+        style="width:250px;height:250px"
+        class="disco-ball">
+    </lord-icon>
     <!-- <pre> {{ getUserInfo }} </pre> -->
-    <button class="btn-primary" @click="logout">Logout</button>
+    <div class="landing-section">
+      <button class="btn-primary">How it works</button>
+      <button class="btn-primary">Start the game</button>
+    </div>
+    <pre class="lord-icons-disclaimer">
+      Animated icons by <a target="_blank" href="https://lordicon.com">Lordicon</a>
+      <a target="_blank" href="https://icons8.com/icon/83214/impostazioni">Settings</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+      </pre>
+    <img @click="toggleSettings" class="settings-icon" src="../assets/icons8-settings.svg" alt="">
+    <div class="settings-modal" v-if="getShowSettings">
+      <div class="settings-modal_dialog">
+        <div class="user-info">
+          Name: 
+          <input @keyup.enter="updateUser" v-if="getUserInfo.displayName == null" type="text" v-model="userName" placeholder="Your name">
+          <span v-else>{{ getUserInfo.displayName }}</span>
+          Email: 
+          <span>{{ getUserInfo.email }}</span>
+          <!-- Image:
+          <span> {{ getUserInfo.photoURL }}</span> -->
+          <span :class="getUserInfo.emailVerified ? 'green' : 'red'"> {{ getUserInfo.emailVerified ? 'Verificata' : 'Email non verificata' }}</span>
+        </div>
+        <!-- <pre>{{ getUserInfo }}</pre> -->
+        <button class="btn-primary" @click="logout">Logout</button>
+        <button class="btn-primary" @click="toggleSettings">Close</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { logoutUser, getCurrentSignedInUserData } from "../state.js"
+import { logoutUser, getCurrentSignedInUserData, updateUser, throwAlert, toggleSettings, state } from "../state.js"
 
 export default {
   name: 'GameHome',
+  data() {
+    return {
+      userName: ''
+    }
+  },
   methods: {
     logout: function(){
       logoutUser();
+    },
+    updateUser: function(){
+        updateUser({displayName: this.userName})
+          .then(() => {
+            throwAlert("Nome aggiornato", "success");
+            state.loadingClass = "hidden";
+          })
+          .catch(error => {
+             throwAlert(error, "error");
+              state.loadingClass = "hidden";
+          });        
+    },
+    toggleSettings: function() {
+      toggleSettings();
     }
   },
   computed: {
     getUserInfo() {
       return getCurrentSignedInUserData();
+    },
+    getShowSettings() {
+      return state.showSettings;
     }
   }
 }
@@ -25,21 +79,97 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-button {
-      min-height: 3rem;
+.game-home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-      &.btn-primary {
-        border: none;
-        color: #fff;
-        background-color: #4c3211;
+  .settings-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
 
-        border-radius: 5px;
-        font-size: 0.9rem;
-        font-weight: 700;
+  .settings-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(31, 31, 31, 0.4);
+    display: grid;
+    place-content: center;
+    &_dialog {
+      background-color: #ffeccd;
+      padding: 20px;
+      border-radius: 10px;
+      width: min(70vw, 350px);
+      .user-info {
+        margin-bottom: 1rem;
+        input {
+          padding: 0.5rem;
+          border-radius: 5px;
+          border: none;
+        }
+        & > * {
+          margin-bottom: 0.5rem;
+        }
+        span {
+          &.green{
+            color: green;
+          }
+          &.red{
+            color: red;
+          }
+        }
       }
-
-      &:hover {
-        cursor: pointer;
+      button {
+        width: 100%;
+        &:not(:last-child) {
+          margin-bottom: 0.5rem;
+        }
       }
     }
+  }
+}
+
+.disco-ball {
+  position: fixed;
+  top: -42px;
+}
+
+.lord-icons-disclaimer {
+  position: absolute;
+  bottom: 0;
+}
+
+.landing-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 250px;
+  width: 100%;
+  max-width: min(70vw, 350px);
+
+  button {
+    margin-bottom: 0.5rem;
+  }
+}
+
+button {
+  min-height: 3rem;
+
+  &.btn-primary {
+    border: none;
+    color: #fff;
+    background-color: #4c3211;
+
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
 </style>

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged   } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0eHlAwojYv6sDdMqapqmgZTBMQFELrHc",
@@ -25,6 +25,7 @@ export const state = Vue.observable(
         alertClass: "hidden", //hidden or show
         alertMessage: '--',
         loadingClass: "hidden", //hidden or show
+        showSettings: false,
     }
 )
 
@@ -42,6 +43,25 @@ export const throwAlert = function(alertText, alertType){
         state.alertMessage = '--';
     }, 4000)
   }
+
+//Settings
+export const toggleSettings = function() {
+  state.showSettings = !state.showSettings
+}
+
+//User Manipulation Functions
+export const updateUser = (changedObj) =>
+  new Promise((resolve, reject) => {
+    updateProfile(auth.currentUser, changedObj)
+    .then(() => {
+        console.log("Profile updated")
+        resolve("ok")
+    })
+    .catch((error) => {
+        console.log("Profile updated")
+        reject(error.code + " => " + error.message)
+    });
+  });
 
 //Login Logic Functions
 export const registerNewUser = (email, password) =>
@@ -84,10 +104,10 @@ export const checkSignInStatus = function(){
     onAuthStateChanged(auth, (user) => {
         if (user) {
           state.signedIn.status = true;
-          // state.signedIn.sessionUser = user;
+          state.signedIn.sessionUser = user;
         } else {
           state.signedIn.status = false;
-          // state.signedIn.sessionUser = {};
+          state.signedIn.sessionUser = {};
         }
       });
 }

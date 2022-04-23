@@ -74,6 +74,7 @@ export default {
   display: grid;
   place-content: center;
   animation: all 250s ease-out;
+  z-index: 9999;
   &.hidden {
     visibility: hidden;
   }
