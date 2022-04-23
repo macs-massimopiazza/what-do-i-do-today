@@ -3,14 +3,15 @@
     <lord-icon
         src="https://cdn.lordicon.com/apuwlldu.json"
         trigger="loop"
-        colors="primary:#ffffff,secondary:#ffffff"
+        colors="primary:#ffffff,secondary:#4c3211"
+        stroke="35"
         style="width:250px;height:250px"
         class="disco-ball">
     </lord-icon>
     <!-- <pre> {{ getUserInfo }} </pre> -->
     <div class="landing-section">
-      <button class="btn-primary">How it works</button>
-      <button class="btn-primary">Start the game</button>
+      <button class="btn-fill">Start the game</button>
+      <button class="btn-outline">How it works</button>
     </div>
     <pre class="lord-icons-disclaimer">
       Animated icons by <a target="_blank" href="https://lordicon.com">Lordicon</a>
@@ -30,8 +31,8 @@
           <span :class="getUserInfo.emailVerified ? 'green' : 'red'"> {{ getUserInfo.emailVerified ? 'Verificata' : 'Email non verificata' }}</span>
         </div>
         <!-- <pre>{{ getUserInfo }}</pre> -->
-        <button class="btn-primary" @click="logout">Logout</button>
-        <button class="btn-primary" @click="toggleSettings">Close</button>
+        <button class="btn-outline" @click="logout">Logout</button>
+        <button class="btn-fill" @click="toggleSettings">Close</button>
       </div>
     </div>
   </div>
@@ -49,6 +50,7 @@ export default {
   },
   methods: {
     logout: function(){
+      state.showSettings = false;
       logoutUser();
     },
     updateUser: function(){
@@ -100,7 +102,9 @@ export default {
     display: grid;
     place-content: center;
     &_dialog {
-      background-color: #ffeccd;
+      background: #eacda3;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(350deg , #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(350deg, #d6ae7b, #eacda3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
       padding: 20px;
       border-radius: 10px;
       width: min(70vw, 350px);
@@ -131,11 +135,11 @@ export default {
       }
     }
   }
-}
+} 
 
 .disco-ball {
   position: fixed;
-  top: -42px;
+  top: -50px;
 }
 
 .lord-icons-disclaimer {
@@ -152,24 +156,6 @@ export default {
 
   button {
     margin-bottom: 0.5rem;
-  }
-}
-
-button {
-  min-height: 3rem;
-
-  &.btn-primary {
-    border: none;
-    color: #fff;
-    background-color: #4c3211;
-
-    border-radius: 5px;
-    font-size: 0.9rem;
-    font-weight: 700;
-  }
-
-  &:hover {
-    cursor: pointer;
   }
 }
 </style>

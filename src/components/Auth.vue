@@ -8,7 +8,7 @@
       <div class="classic-login">
         <input type="text" placeholder="Email" v-model="emailInput" @keyup.enter="callLoginUser">
         <input type="password" placeholder="Password" v-model="pswInput" @keyup.enter="callLoginUser">
-        <button class="btn-primary" @click="callLoginUser" >Login</button>
+        <button class="btn-fill" @click="callLoginUser" >Login</button>
       </div>
       <div class="third-party-login">
         <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
@@ -23,7 +23,7 @@
         <!-- <input type="text" placeholder="Username"> -->
         <input type="text" placeholder="Email" v-model="emailInput" @keyup.enter="callRegisterNewUser">
         <input type="password" placeholder="Password" v-model="pswInput" @keyup.enter="callRegisterNewUser">
-        <button class="btn-primary" @click="callRegisterNewUser" @keyup.enter="callLoginUser">Register</button>
+        <button class="btn-fill" @click="callRegisterNewUser" @keyup.enter="callLoginUser">Register</button>
       </div>
       <div class="third-party-login">
         <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
@@ -33,7 +33,7 @@
     <!-- SWITCH VIEW -->
     <div class="create-account">
       <h4 class="subtitle">{{ switchQuestion }} have an account?</h4>
-      <button class="btn-primary" @click="changeView"> {{ switchText }}</button>
+      <button class="btn-fill" @click="changeView"> {{ switchText }}</button>
     </div>
   </div>
 </template>
@@ -121,23 +121,6 @@ export default {
     justify-content: space-evenly;
     transition: all 1s;
 
-    button {
-      min-height: 3rem;
-
-      &.btn-primary {
-        border: none;
-        color: #fff;
-        background-color: #4c3211;
-
-        border-radius: 5px;
-        font-size: 0.9rem;
-        font-weight: 700;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
     &.login {
       background: #eacda3;  /* fallback for old browsers */
       background: -webkit-linear-gradient(300deg , #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */

@@ -40,7 +40,7 @@ export default {
     }
   },
   mounted() {
-    checkSignInStatus()
+    checkSignInStatus();
   }
 }
 </script>
@@ -74,7 +74,7 @@ export default {
   display: grid;
   place-content: center;
   animation: all 250s ease-out;
-  z-index: 9999;
+  z-index: 9998;
   &.hidden {
     visibility: hidden;
   }
@@ -104,6 +104,7 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       transition: top 300ms ease-out;
+      z-index: 9999;
       &.success {
         background: #11998e;  /* fallback for old browsers */
         background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
@@ -126,5 +127,41 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+button {
+  min-height: 3rem;
+
+  &.btn-fill {
+    border: none;
+    color: #fff;
+    background-color: #4c3211;
+
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  &.btn-outline {
+    color: #4c3211;
+    background-color: #ffeccd;
+    border: 2px solid #4c3211;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  &.btn-fill-light {
+    color: #4c3211;
+    background-color: #eacda3;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

@@ -101,13 +101,16 @@ export const logoutUser = function() {
 }
 
 export const checkSignInStatus = function(){
+    state.loadingClass="show";
     onAuthStateChanged(auth, (user) => {
         if (user) {
           state.signedIn.status = true;
           state.signedIn.sessionUser = user;
+          state.loadingClass="hidden";
         } else {
           state.signedIn.status = false;
           state.signedIn.sessionUser = {};
+          state.loadingClass="hidden";
         }
       });
 }
