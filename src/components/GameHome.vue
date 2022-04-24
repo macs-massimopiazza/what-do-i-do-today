@@ -21,11 +21,15 @@
     <div class="settings-modal" v-if="getShowSettings">
       <div class="settings-modal_dialog">
         <div class="user-info">
-          Name: 
-          <input @keyup.enter="updateUser" v-if="getUserInfo.displayName == null" type="text" v-model="userName" placeholder="Your name">
-          <span v-else>{{ getUserInfo.displayName }}</span>
-          Email: 
-          <span>{{ getUserInfo.email }}</span>
+          <div class="name-wrapper">
+            <strong>Name: </strong> 
+            <input @keyup.enter="updateUser" v-if="getUserInfo.displayName == null" type="text" v-model="userName" placeholder="Your name">
+            <span v-else>{{ getUserInfo.displayName }}</span>
+          </div>
+          <div class="email-wrapper">
+            <strong>Email: </strong> 
+            <span>{{ getUserInfo.email }}</span>
+          </div>
           <!-- Image:
           <span> {{ getUserInfo.photoURL }}</span> -->
           <span :class="getUserInfo.emailVerified ? 'green' : 'red'"> {{ getUserInfo.emailVerified ? 'Verificata' : 'Email non verificata' }}</span>
@@ -110,13 +114,13 @@ export default {
       width: min(70vw, 350px);
       .user-info {
         margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
         input {
           padding: 0.5rem;
           border-radius: 5px;
           border: none;
-        }
-        & > * {
-          margin-bottom: 0.5rem;
         }
         span {
           &.green{
