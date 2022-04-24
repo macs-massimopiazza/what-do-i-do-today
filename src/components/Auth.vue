@@ -11,8 +11,9 @@
         <button class="btn-fill" @click="callLoginUser" >Login</button>
       </div>
       <div class="third-party-login">
-        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
-        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign with Facebook</span></button>
+        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Login with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Login with Facebook</span></button>
+        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Login with Apple ID</span></button>
       </div>
     </div>
     <!-- REGISTER VIEW -->
@@ -26,8 +27,9 @@
         <button class="btn-fill" @click="callRegisterNewUser" @keyup.enter="callLoginUser">Register</button>
       </div>
       <div class="third-party-login">
-        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign in with Google</span></button>
-        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign with Facebook</span></button>
+        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Register with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Register with Facebook</span></button>
+        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Register with Apple ID</span></button>
       </div>
     </div>
     <!-- SWITCH VIEW -->
@@ -175,7 +177,7 @@ export default {
       justify-content: center;
       img {
         width: 25px;
-        margin-right: 5px;
+        margin-right: 0.5rem;
       }
       &.google {
         background-color: #fff;
@@ -188,6 +190,10 @@ export default {
         img {
           width: 20px;
         }
+      }
+      &.apple {
+        background-color: #000;
+        color: #fff;
       }
     }
     input {
