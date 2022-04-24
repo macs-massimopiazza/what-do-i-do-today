@@ -6,7 +6,9 @@ import {
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
   updateProfile,
-  sendEmailVerification 
+  sendEmailVerification,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -19,8 +21,8 @@ const firebaseConfig = {
   measurementId: "G-0MJSQJSKNL"
 };
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
+let provider;
 
 //Data
 export const state = Vue.observable(
@@ -115,6 +117,29 @@ export const logoutUser = function() {
         checkSignInStatus()
     })
 }
+
+export const googleOAuth = () => 
+  new Promise((resolve, reject) => {
+    provider = new GoogleAuthProvider();
+    state.loadingClass="show";
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // googleApiToken = credential.accessToken
+        console.log(result)
+        resolve("ok")
+        checkSignInStatus()
+        state.loadingClass="hidden";
+      }).catch((error) => {
+        // The email of the user's account used.
+        console.log(error.email);
+        // The AuthCredential type that was used.
+        console.log(GoogleAuthProvider.credentialFromError(error));
+        reject(error.code + " => " + error.message)
+        state.loadingClass="hidden";
+      });
+  });
 
 export const checkSignInStatus = function(){
     state.loadingClass="show";

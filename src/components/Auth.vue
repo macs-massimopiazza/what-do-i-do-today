@@ -11,9 +11,9 @@
         <button class="btn-fill" @click="callLoginUser" >Login</button>
       </div>
       <div class="third-party-login">
-        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Login with Google</span></button>
-        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Login with Facebook</span></button>
-        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Login with Apple ID</span></button>
+        <button class="google" @click="callGoogleOAuth"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign In with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign In with Facebook</span></button>
+        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Sign In with Apple ID</span></button>
       </div>
     </div>
     <!-- REGISTER VIEW -->
@@ -27,9 +27,9 @@
         <button class="btn-fill" @click="callRegisterNewUser" @keyup.enter="callLoginUser">Register</button>
       </div>
       <div class="third-party-login">
-        <button class="google"><img src="../assets/icons8-logo-google.svg" alt=""><span>Register with Google</span></button>
-        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Register with Facebook</span></button>
-        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Register with Apple ID</span></button>
+        <button class="google" @click="callGoogleOAuth"><img src="../assets/icons8-logo-google.svg" alt=""><span>Sign In with Google</span></button>
+        <button class="fb"><img src="../assets/icons8-facebook.svg" alt=""><span>Sign In with Facebook</span></button>
+        <button class="apple"><img src="../assets/icons8-apple.svg" alt=""><span>Sign In with Apple ID</span></button>
       </div>
     </div>
     <!-- SWITCH VIEW -->
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { state, registerNewUser, loginUser, throwAlert } from "../state.js"
+import { state, registerNewUser, loginUser, throwAlert, googleOAuth } from "../state.js"
 export default {
   name: 'AuthComponent',
   data(){
@@ -73,7 +73,7 @@ export default {
         state.loadingClass = "show";
         registerNewUser(this.emailInput, this.pswInput)
           .then(() => {
-            throwAlert("Utente creato con Successo!", "success");
+            throwAlert("User created successfully!", "success");
             this.viewLogin = true;
             this.switchQuestion = "Don't";
             this.switchText = "Create One";
@@ -85,7 +85,7 @@ export default {
               state.loadingClass = "hidden";
           });        
       } else {
-        throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+        throwAlert("Ehi! Insert Email and Passowrd", "error")
       }
       this.emailInput = ''
       this.pswInput = ''
@@ -95,7 +95,7 @@ export default {
         state.loadingClass = "show";
         loginUser(this.emailInput, this.pswInput)
           .then(() => {
-            throwAlert("Login Effettuato con Successo!", "success");
+            throwAlert("Login Succesful!", "success");
             state.loadingClass = "hidden"
           })
           .catch(error => {
@@ -103,11 +103,22 @@ export default {
              state.loadingClass = "hidden"
           });        
       } else {
-        throwAlert("Attenzione! Inserisci Email e Passowrd", "error")
+        throwAlert("Ehi! Insert Email and Passowrd", "error")
       }
       this.emailInput = ''
       this.pswInput = ''
     },
+    callGoogleOAuth: function(){
+      googleOAuth()
+        .then(() => {
+          throwAlert("Google signin yeee!", "success");
+          state.loadingClass = "hidden"
+        })
+        .catch(error => {
+            throwAlert(error, "error");
+            state.loadingClass = "hidden"
+        });        
+    }
   }
 }
 </script>
