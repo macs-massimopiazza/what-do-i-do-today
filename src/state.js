@@ -1,6 +1,13 @@
 import Vue from "vue";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  updateProfile,
+  sendEmailVerification 
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0eHlAwojYv6sDdMqapqmgZTBMQFELrHc",
@@ -54,11 +61,20 @@ export const updateUser = (changedObj) =>
   new Promise((resolve, reject) => {
     updateProfile(auth.currentUser, changedObj)
     .then(() => {
-        console.log("Profile updated")
         resolve("ok")
     })
     .catch((error) => {
-        console.log("Profile updated")
+        reject(error.code + " => " + error.message)
+    });
+  });
+
+export const throwSendEmailVerification  = () =>
+  new Promise((resolve, reject) => {
+    sendEmailVerification (auth.currentUser)
+    .then(() => {
+        resolve("ok")
+    })
+    .catch((error) => {
         reject(error.code + " => " + error.message)
     });
   });

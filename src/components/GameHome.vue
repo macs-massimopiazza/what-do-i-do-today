@@ -23,7 +23,10 @@
         <div class="user-info">
           <div class="name-wrapper">
             <strong>Name: </strong> 
-            <input @keyup.enter="updateUser" v-if="getUserInfo.displayName == null" type="text" v-model="userName" placeholder="Your name">
+            <div class="update-name-wrapper" v-if="getUserInfo.displayName == null">
+              <input @keyup.enter="updateUser" type="text" v-model="userName" placeholder="Your name">
+              <button @click="updateUser" class="btn-fill btn-email-verify">Update Name</button>
+            </div>
             <span v-else>{{ getUserInfo.displayName }}</span>
           </div>
           <div class="email-wrapper">
@@ -32,7 +35,10 @@
           </div>
           <!-- Image:
           <span> {{ getUserInfo.photoURL }}</span> -->
-          <span :class="getUserInfo.emailVerified ? 'green' : 'red'"> {{ getUserInfo.emailVerified ? 'Verificata' : 'Email non verificata' }}</span>
+          <div class="email-verification-wrapper">
+            <span :class="getUserInfo.emailVerified ? 'green' : 'red'"> {{ getUserInfo.emailVerified ? 'Email verified' : 'Email not verified' }}</span>
+            <button v-if="!getUserInfo.emailVerified" @click="getSendEmailVerification" class="btn-fill btn-email-verify">Send Email</button>
+          </div>
         </div>
         <!-- <pre>{{ getUserInfo }}</pre> -->
         <button class="btn-outline" @click="logout">Logout</button>
@@ -43,7 +49,7 @@
 </template>
 
 <script>
-import { logoutUser, getCurrentSignedInUserData, updateUser, throwAlert, toggleSettings, state } from "../state.js"
+import { logoutUser, getCurrentSignedInUserData, updateUser, throwAlert, toggleSettings, throwSendEmailVerification, state } from "../state.js"
 
 export default {
   name: 'GameHome',
@@ -60,7 +66,7 @@ export default {
     updateUser: function(){
         updateUser({displayName: this.userName})
           .then(() => {
-            throwAlert("Nome aggiornato", "success");
+            throwAlert("Name Updated", "success");
             state.loadingClass = "hidden";
           })
           .catch(error => {
@@ -70,6 +76,17 @@ export default {
     },
     toggleSettings: function() {
       toggleSettings();
+    },
+    getSendEmailVerification: function(){
+        throwSendEmailVerification()
+          .then(() => {
+            throwAlert("Email Verification Sent", "success");
+            state.loadingClass = "hidden";
+          })
+          .catch(error => {
+             throwAlert(error, "error");
+              state.loadingClass = "hidden";
+          });        
     }
   },
   computed: {
@@ -117,10 +134,22 @@ export default {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        .update-name-wrapper {
+          display: flex;
+          gap: 0.3rem;
+          input{
+            width: 100%;
+          }
+        }
         input {
           padding: 0.5rem;
           border-radius: 5px;
           border: none;
+        }
+        button, button.btn-email-verify {
+          width: fit-content;
+          min-height: fit-content;
+          padding: 0.3rem;
         }
         span {
           &.green{
