@@ -9,8 +9,15 @@
         class="disco-ball">
     </lord-icon>
     <!-- <pre> {{ getUserInfo }} </pre> -->
+    <div class="activities-section">
+      <h3>Today's Activities:</h3>
+      <span v-if="getActivitesData == null"> It's a new day, get today's activites </span>
+      <div class="activity-card" v-for="(activity, index) in getActivitesData" :key="index">
+        {{activity.activity}}
+      </div>
+    </div>
     <div class="landing-section">
-      <button class="btn-fill" @click="startGame">Start the game</button>
+      <button class="btn-fill" @click="startGame">Get Today's Activities</button>
       <button class="btn-outline">How it works</button>
     </div>
     <pre class="lord-icons-disclaimer">
@@ -59,7 +66,8 @@ import {
   state,
   getActivities,
   writeUserData,
-  getCurrentUserActivitiesUpdateDate
+  getCurrentUserActivitiesUpdateDate,
+  getCurrentUserActivities,
   } from "../state.js"
 
   const dayjs = require('dayjs');
@@ -104,14 +112,15 @@ export default {
     setDailyActivities: async function(){
       let latestUpdateDate = await getCurrentUserActivitiesUpdateDate()
       if (dayjs().format("DD-MM-YYYY") == latestUpdateDate) {
-        throwAlert("Hey, those are the activities for the day. You can't change them ehehe :)","error");
+        throwAlert("Hey, those are the activities for the day. You can't change them ehehe :)", "error");
       } else {
         let activities = await getActivities(4);
         writeUserData(activities);
       }
     },
-    startGame: function() {
-      this.setDailyActivities();
+    startGame: async function() {
+      await this.setDailyActivities();
+      state.currentActivities = await getCurrentUserActivities()
     }
   },
   computed: {
@@ -120,6 +129,17 @@ export default {
     },
     getShowSettings() {
       return state.showSettings;
+    },
+    getActivitesData() {
+      return state.currentActivities;
+    }
+  },
+  async created() {
+    let latestUpdateDate = await getCurrentUserActivitiesUpdateDate()
+    if(dayjs().format("DD-MM-YYYY") == latestUpdateDate) {
+      state.currentActivities = await getCurrentUserActivities()
+    } else {
+      state.currentActivities = null;
     }
   }
 }
@@ -208,12 +228,53 @@ export default {
 .landing-section {
   display: flex;
   flex-direction: column;
-  margin-top: 250px;
   width: 100%;
   max-width: min(70vw, 350px);
 
   button {
     margin-bottom: 0.5rem;
+  }
+}
+
+.activities-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: min(70vw, 350px);
+  margin-top: 220px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px dashed #4c3211;
+
+  .activity-card {
+    text-align: center;
+    border: none;
+    color: #4c3211;
+    background-color: #ffeccd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    min-height: min(3rem, 7vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+  
+  h3 {
+    font-family: "Nighty Demo";
+    color: #4c3211;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin-bottom: 1rem;
   }
 }
 </style>

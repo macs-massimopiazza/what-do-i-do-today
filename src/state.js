@@ -52,6 +52,7 @@ export const state = Vue.observable(
         alertMessage: '--',
         loadingClass: "hidden", //hidden or show
         showSettings: false,
+        currentActivities: []
     }
 )
 
@@ -199,6 +200,7 @@ export const writeUserData = function(activities) {
   throwAlert("There you go, now you got something to do today ;)", "success")
 }
 
+
 export const getCurrentUserActivitiesUpdateDate = () =>
   new Promise((resolve) => {
     const activitiesUpdateDateRef = ref(db, 'users/' + auth.currentUser.uid + '/activitiesUpdateDate');
@@ -208,4 +210,12 @@ export const getCurrentUserActivitiesUpdateDate = () =>
     });
   });
 
+  export const getCurrentUserActivities = () =>
+  new Promise((resolve) => {
+    const activitiesRef = ref(db, 'users/' + auth.currentUser.uid + '/activities');
+    onValue(activitiesRef, (snapshot) => {
+      //activities
+      resolve(snapshot.val());
+    });
+  });
 
