@@ -2,9 +2,11 @@ import Vue from "vue";
 //Inizialize Firebase App
 import { initializeApp } from "firebase/app";
 //import realtime db modules
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 //use axios to get activities
 import axios from "axios";
+//using dayjs for manipulate activities date  
+const dayjs = require('dayjs');
 
 //Import firebase auth modules
 import { 
@@ -191,8 +193,19 @@ export const checkSignInStatus = function(){
 //realtime database
 export const writeUserData = function(activities) {
   set(ref(db, 'users/' + auth.currentUser.uid), {
-    activities
+    activities,
+    activitiesUpdateDate: dayjs().format("DD-MM-YYYY"),
   })
+  throwAlert("There you go, now you got something to do today ;)", "success")
 }
+
+export const getCurrentUserActivitiesUpdateDate = () =>
+  new Promise((resolve) => {
+    const activitiesUpdateDateRef = ref(db, 'users/' + auth.currentUser.uid + '/activitiesUpdateDate');
+    onValue(activitiesUpdateDateRef, (snapshot) => {
+      //activities array latest update date
+      resolve(snapshot.val());
+    });
+  });
 
 

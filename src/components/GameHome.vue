@@ -10,7 +10,7 @@
     </lord-icon>
     <!-- <pre> {{ getUserInfo }} </pre> -->
     <div class="landing-section">
-      <button class="btn-fill" @click="setDailyActivities">Start the game</button>
+      <button class="btn-fill" @click="startGame">Start the game</button>
       <button class="btn-outline">How it works</button>
     </div>
     <pre class="lord-icons-disclaimer">
@@ -58,8 +58,11 @@ import {
   throwSendEmailVerification, 
   state,
   getActivities,
-  writeUserData
+  writeUserData,
+  getCurrentUserActivitiesUpdateDate
   } from "../state.js"
+
+  const dayjs = require('dayjs');
 
 export default {
   name: 'GameHome',
@@ -99,8 +102,16 @@ export default {
           });        
     },
     setDailyActivities: async function(){
-      let activities = await getActivities(4);
-      writeUserData(activities);
+      let latestUpdateDate = await getCurrentUserActivitiesUpdateDate()
+      if (dayjs().format("DD-MM-YYYY") == latestUpdateDate) {
+        throwAlert("Hey, those are the activities for the day. You can't change them ehehe :)","error");
+      } else {
+        let activities = await getActivities(4);
+        writeUserData(activities);
+      }
+    },
+    startGame: function() {
+      this.setDailyActivities();
     }
   },
   computed: {
