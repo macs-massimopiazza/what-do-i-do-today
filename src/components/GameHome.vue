@@ -10,7 +10,7 @@
     </lord-icon>
     <!-- <pre> {{ getUserInfo }} </pre> -->
     <div class="landing-section">
-      <button class="btn-fill">Start the game</button>
+      <button class="btn-fill" @click="setDailyActivities">Start the game</button>
       <button class="btn-outline">How it works</button>
     </div>
     <pre class="lord-icons-disclaimer">
@@ -49,7 +49,17 @@
 </template>
 
 <script>
-import { logoutUser, getCurrentSignedInUserData, updateUser, throwAlert, toggleSettings, throwSendEmailVerification, state } from "../state.js"
+import { 
+  logoutUser, 
+  getCurrentSignedInUserData, 
+  updateUser, 
+  throwAlert, 
+  toggleSettings, 
+  throwSendEmailVerification, 
+  state,
+  getActivities,
+  writeUserData
+  } from "../state.js"
 
 export default {
   name: 'GameHome',
@@ -87,6 +97,10 @@ export default {
              throwAlert(error, "error");
               state.loadingClass = "hidden";
           });        
+    },
+    setDailyActivities: async function(){
+      let activities = await getActivities(4);
+      writeUserData(activities);
     }
   },
   computed: {
