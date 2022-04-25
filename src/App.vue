@@ -52,7 +52,7 @@ export default {
     font-style: normal;
     font-weight: 400;
     src: local('Nighty-Demo'), local('Nighty-Demo'),
-        url("assets/fonts/nightydemo.woff2") format('woff'),
+        // url("assets/fonts/nightydemo.woff2") format('woff'),
         url("assets/fonts/nightydemo.ttf") format('truetype');
 }
 

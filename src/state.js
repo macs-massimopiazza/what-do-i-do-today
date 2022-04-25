@@ -1,5 +1,14 @@
 import Vue from "vue";
+//Inizialize Firebase App
 import { initializeApp } from "firebase/app";
+//import realtime db modules
+import { getDatabase, ref, set, onValue } from "firebase/database";
+//use axios to get activities
+import axios from "axios";
+//using dayjs for manipulate activities date  
+const dayjs = require('dayjs');
+
+//Import firebase auth modules
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -11,20 +20,28 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
+//firebase app config
 const firebaseConfig = {
   apiKey: "AIzaSyA0eHlAwojYv6sDdMqapqmgZTBMQFELrHc",
   authDomain: "what-do-i-do-today-5ab1e.firebaseapp.com",
+  databaseURL: "https://what-do-i-do-today-5ab1e-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "what-do-i-do-today-5ab1e",
   storageBucket: "what-do-i-do-today-5ab1e.appspot.com",
   messagingSenderId: "330876849393",
   appId: "1:330876849393:web:950b0774ca90af44b5ed50",
   measurementId: "G-0MJSQJSKNL"
 };
+//inizialize reference to firebase app
 const app = initializeApp(firebaseConfig);
+//initialize reference to auth service
 const auth = getAuth(app);
+//initialize reference to auth service
+const db = getDatabase(app);
+
+//provider for OAuth
 let provider;
 
-//Data
+//Vue Observable properties
 export const state = Vue.observable(
     {
         signedIn: {
@@ -35,6 +52,7 @@ export const state = Vue.observable(
         alertMessage: '--',
         loadingClass: "hidden", //hidden or show
         showSettings: false,
+        currentActivities: []
     }
 )
 
@@ -42,6 +60,24 @@ export const state = Vue.observable(
 export const getCurrentSignedInUserData = function(){
   return auth.currentUser;
 }
+
+export const getActivities = (n) =>
+  new Promise((resolve, reject) => {
+    let activities = [];
+    for(let i = 0; i < n; i++) {
+      axios.get("https://www.boredapi.com/api/activity/")
+        .then(res => {
+          activities.push(res.data);
+          if (activities.length == n) {
+            resolve(activities)
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          reject("errore axios: " + err)
+        })
+    }
+  });
 
 //Alert Manager
 export const throwAlert = function(alertText, alertType){
@@ -87,8 +123,7 @@ export const registerNewUser = (email, password) =>
     email = email.trim();
     password = password.trim();
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        console.log(userCredential)
+    .then(() => {
         resolve("ok")
     })
     .catch((error) => {
@@ -156,5 +191,31 @@ export const checkSignInStatus = function(){
       });
 }
 
+//realtime database
+export const writeUserData = function(activities) {
+  set(ref(db, 'users/' + auth.currentUser.uid), {
+    activities,
+    activitiesUpdateDate: dayjs().format("DD-MM-YYYY"),
+  })
+  throwAlert("There you go, now you got something to do today ;)", "success")
+}
 
+
+export const getCurrentUserActivitiesUpdateDate = () =>
+  new Promise((resolve) => {
+    const activitiesUpdateDateRef = ref(db, 'users/' + auth.currentUser.uid + '/activitiesUpdateDate');
+    onValue(activitiesUpdateDateRef, (snapshot) => {
+      //activities array latest update date
+      resolve(snapshot.val());
+    });
+  });
+
+  export const getCurrentUserActivities = () =>
+  new Promise((resolve) => {
+    const activitiesRef = ref(db, 'users/' + auth.currentUser.uid + '/activities');
+    onValue(activitiesRef, (snapshot) => {
+      //activities
+      resolve(snapshot.val());
+    });
+  });
 
